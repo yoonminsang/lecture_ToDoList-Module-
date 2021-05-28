@@ -1,4 +1,5 @@
 import Head from './Head.js';
+import Inner from './Inner.js';
 const DATE = 'date';
 const TODOS = 'todos';
 function App($app) {
@@ -6,7 +7,11 @@ function App($app) {
     date: '',
     toDos: [],
   };
-  const head = new Head({ $app, initialState: this.state.toDos });
+  const head = new Head({ $app, initialState: this.state.date });
+  const inner = new Inner({
+    $app,
+    initialState: this.state.toDos,
+  });
   setInterval(
     () => this.setState(DATE, { ...this.state, date: getDate() }),
     1000
