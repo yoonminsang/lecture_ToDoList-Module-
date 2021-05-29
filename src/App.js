@@ -24,6 +24,12 @@ function App($app) {
         toDos: [...this.state.toDos, newToDo],
       });
     },
+    deleteToDo: (id) => {
+      this.setState(TODOS, {
+        ...this.state,
+        toDos: this.state.toDos.filter((toDo) => toDo.id !== id),
+      });
+    },
   });
   setInterval(
     () => this.setState(DATE, { ...this.state, date: getDate() }),

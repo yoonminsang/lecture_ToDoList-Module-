@@ -1,4 +1,4 @@
-function Inner({ $app, initialState, addToDo }) {
+function Inner({ $app, initialState, addToDo, deleteToDo }) {
   this.$target = document.createElement('div');
   this.$target.className = 'content_inner';
   this.$target.innerHTML = `
@@ -28,36 +28,21 @@ function Inner({ $app, initialState, addToDo }) {
     this.render();
   };
   this.render = () => {
-    this.$list.innerHTML = this.state.map((toDo) => {
-      const { id, value, date, done, check } = toDo;
-      return `
+    this.$list.innerHTML = this.state
+      .map((toDo) => {
+        const { id, value, date, done, check } = toDo;
+        return `
       <div id='${id}' class='${
-        done ? 'toDo_list_item done' : 'toDo_list_item'
-      }'>
+          done ? 'toDo_list_item done' : 'toDo_list_item'
+        }'>
         <input type="checkbox" ${check ? 'checked' : ''}/>
         <div class="text">${value}</div>
         <div class="date">${date}</div>
         <input class="delete" type="button" value="❌"/>
       </div>
       `;
-    });
-    /*
-        <div
-      id={id}
-      className={done ? 'toDo_list_item done' : 'toDo_list_item'}
-      onClick={(e) => doneChange(e, id)}
-    >
-      <input type="checkbox" checked={check} onChange={() => checkChange(id)} />
-      <div className="text">{value}</div>
-      <div className="date">{date}</div>
-      <input
-        className="delete"
-        type="button"
-        value="❌"
-        onClick={() => deleteToDo(id)}
-      />
-    </div>
-    */
+      })
+      .join('');
   };
   const $form = this.$target.querySelector('form');
   const $input = this.$target.querySelector('.toDo_input');
@@ -65,6 +50,9 @@ function Inner({ $app, initialState, addToDo }) {
     e.preventDefault();
     addToDo($input.value);
     $input.value = '';
+  });
+  this.$list.addEventListener('click', (e) => {
+    if (e.target.className === 'delete') deleteToDo(+e.target.parentNode.id);
   });
 }
 export default Inner;
