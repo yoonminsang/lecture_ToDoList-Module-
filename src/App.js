@@ -11,6 +11,19 @@ function App($app) {
   const inner = new Inner({
     $app,
     initialState: this.state.toDos,
+    addToDo: (value) => {
+      const newToDo = {
+        id: Date.now(),
+        value,
+        date: this.state.date,
+        done: false,
+        check: false,
+      };
+      this.setState(TODOS, {
+        ...this.state,
+        toDos: [...this.state.toDos, newToDo],
+      });
+    },
   });
   setInterval(
     () => this.setState(DATE, { ...this.state, date: getDate() }),
@@ -34,6 +47,8 @@ function App($app) {
     switch (type) {
       case DATE:
         return head.setState(this.state.date);
+      case TODOS:
+        return inner.setState(this.state.toDos);
     }
   };
   const init = () => {
